@@ -23,7 +23,7 @@ pub fn test_data() -> &'static str {
     ""
 }
 
-fn import(lines: &Vec<String>) -> Day0Data {
+fn import(lines: &Vec<String>) -> Day1Data {
     Day1Data {
         data: lines.iter().map(|x| x.trim().parse().unwrap()).collect(),
     }

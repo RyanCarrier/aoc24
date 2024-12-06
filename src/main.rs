@@ -4,7 +4,6 @@ use std::time::{Duration, Instant};
 use util::Problem;
 
 pub mod days;
-pub mod jamz;
 mod util;
 
 #[derive(Parser, Debug)]
@@ -19,33 +18,9 @@ struct Args {
     benchmark: bool,
     #[arg(short, long, default_value_t = 100)]
     iterations: usize,
-    #[arg(short, long)]
-    virgin: bool,
 }
 const YEAR: usize = 2023;
-const DAYS: [Problem; 20] = [
-    days::day1::DAY1,
-    days::day2::DAY2,
-    days::day3::DAY3,
-    days::day4::DAY4,
-    days::day5::DAY5,
-    days::day6::DAY6,
-    days::day7::DAY7,
-    days::day8::DAY8,
-    days::day9::DAY9,
-    days::day10::DAY10,
-    days::day11::DAY11,
-    days::day12::DAY12,
-    days::day13::DAY13,
-    days::day14::DAY14,
-    days::day15::DAY15,
-    days::day16::DAY16,
-    days::day17::DAY17,
-    days::day18::DAY18,
-    days::day19::DAY19,
-    days::day20::DAY20,
-];
-const JAMZ: [Problem; 1] = [jamz::day1::DAY1];
+const DAYS: [Problem; 1] = [days::day1::DAY1];
 
 fn main() {
     let args = Args::parse();
@@ -53,11 +28,7 @@ fn main() {
         benchmark(args);
         return;
     }
-    let problems = if args.virgin {
-        JAMZ.to_vec()
-    } else {
-        DAYS.to_vec()
-    };
+    let problems = DAYS.to_vec();
     if args.day == 0 {
         //just assume
         for day in 1..=problems.len() {
@@ -87,11 +58,11 @@ fn run_specific(problem: &Problem, args: &Args) {
     };
     let start = Instant::now();
     if args.part == 0 || args.part == 1 {
-        print_result(problem, args.virgin, 1, args.test, (problem.part1)(&input));
+        print_result(problem, 1, args.test, (problem.part1)(&input));
     }
     let part1_duration = start.elapsed();
     if args.part == 0 || args.part == 2 {
-        print_result(problem, args.virgin, 2, args.test, (problem.part2)(&input));
+        print_result(problem, 2, args.test, (problem.part2)(&input));
     }
     let total_duration = start.elapsed();
     println!(
@@ -101,12 +72,11 @@ fn run_specific(problem: &Problem, args: &Args) {
         util::format_duration(total_duration - part1_duration)
     );
 }
-fn print_result(problem: &Problem, virgin: bool, part: usize, test: bool, result: String) {
+fn print_result(problem: &Problem, part: usize, test: bool, result: String) {
     println!(
-        "day{}part{}{}{}:\t{}",
+        "day{}part{}{}:\t{}",
         problem.day,
         part,
-        if virgin { "-JAMZ" } else { "" },
         if test { "-TEST" } else { "" },
         result
     );
@@ -114,13 +84,7 @@ fn print_result(problem: &Problem, virgin: bool, part: usize, test: bool, result
 
 fn benchmark(args: Args) {
     let runs: usize = args.iterations;
-    let problems = if args.virgin {
-        println!("Running virgin mode activated");
-        JAMZ.to_vec()
-    } else {
-        println!("Running default high speed computations");
-        DAYS.to_vec()
-    };
+    let problems = DAYS.to_vec();
     let range = if args.day == 0 {
         0..problems.len()
     } else {
@@ -137,7 +101,6 @@ fn benchmark(args: Args) {
         print!("{}... ", day + 1);
         data[day] = util::get_input_data(YEAR, day + 1);
     }
-    println!("");
     println!(
         "{}, {} iterations",
         Style::new().bold().paint("Day durations"),
