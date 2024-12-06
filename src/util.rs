@@ -4,8 +4,8 @@ use reqwest::{cookie::Jar, Url};
 #[derive(Clone, Copy)]
 pub struct Problem {
     pub day: usize,
-    pub part1: fn(input: &Vec<String>) -> String,
-    pub part2: fn(input: &Vec<String>) -> String,
+    pub part1: fn(input: &[String]) -> String,
+    pub part2: fn(input: &[String]) -> String,
     pub test_data: Option<fn() -> &'static str>,
 }
 #[allow(dead_code)]
@@ -22,13 +22,13 @@ pub static TRANSFORMS: [[isize; 2]; 8] = [
 
 pub fn format_duration(d: Duration) -> String {
     if d.as_millis() > 1000 {
-        return format!("{:.1}s", d.as_millis() as f64 / 1000 as f64);
+        return format!("{:.1}s", d.as_millis() as f64 / 1000_f64);
     }
     if d.as_micros() > 1000 {
-        return format!("{:.1}ms", d.as_micros() as f64 / 1000 as f64);
+        return format!("{:.1}ms", d.as_micros() as f64 / 1000_f64);
     }
     if d.as_nanos() > 1000 {
-        return format!("{:.1}μs", d.as_nanos() as f64 / 1000 as f64);
+        return format!("{:.1}μs", d.as_nanos() as f64 / 1000_f64);
     }
     format!("{}ns", d.as_nanos())
 }

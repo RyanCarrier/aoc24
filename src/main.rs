@@ -19,7 +19,7 @@ struct Args {
     #[arg(short, long, default_value_t = 100)]
     iterations: usize,
 }
-const YEAR: usize = 2023;
+const YEAR: usize = 2024;
 const DAYS: [Problem; 1] = [days::day1::DAY1];
 
 fn main() {
