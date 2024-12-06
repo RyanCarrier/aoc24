@@ -20,7 +20,7 @@ struct Args {
     iterations: usize,
 }
 const YEAR: usize = 2024;
-const DAYS: [Problem; 1] = [days::day1::DAY1];
+const DAYS: [Problem; 2] = [days::day1::DAY1, days::day2::DAY2];
 
 fn main() {
     let args = Args::parse();
