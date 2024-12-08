@@ -8,6 +8,49 @@ pub struct Problem {
     pub test_data: Option<fn() -> &'static str>,
 }
 #[allow(dead_code)]
+pub enum Direction {
+    Up,
+    Down,
+    Left,
+    Right,
+}
+#[allow(dead_code)]
+impl Direction {
+    pub fn to_offset(&self) -> (isize, isize) {
+        match self {
+            Self::Up => (-1, 0),
+            Self::Down => (1, 0),
+            Self::Left => (0, -1),
+            Self::Right => (0, 1),
+        }
+    }
+    pub fn turn_right(&self) -> Self {
+        match self {
+            Self::Up => Self::Right,
+            Self::Down => Self::Left,
+            Self::Left => Self::Up,
+            Self::Right => Self::Down,
+        }
+    }
+    pub fn turn_left(&self) -> Self {
+        match self {
+            Self::Up => Self::Left,
+            Self::Down => Self::Right,
+            Self::Left => Self::Down,
+            Self::Right => Self::Up,
+        }
+    }
+    pub fn from_char(c: char) -> Self {
+        match c {
+            'U' => Self::Up,
+            'D' => Self::Down,
+            'L' => Self::Left,
+            'R' => Self::Right,
+            _ => panic!("Invalid direction"),
+        }
+    }
+}
+#[allow(dead_code)]
 pub static TRANSFORMS: [(isize, isize); 8] = [
     (-1, -1),
     (-1, 0),
