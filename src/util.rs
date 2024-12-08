@@ -8,16 +8,20 @@ pub struct Problem {
     pub test_data: Option<fn() -> &'static str>,
 }
 #[allow(dead_code)]
-pub static TRANSFORMS: [[isize; 2]; 8] = [
-    [-1, -1],
-    [-1, 0],
-    [-1, 1],
-    [0, -1],
-    [0, 1],
-    [1, -1],
-    [1, 0],
-    [1, 1],
+pub static TRANSFORMS: [(isize, isize); 8] = [
+    (-1, -1),
+    (-1, 0),
+    (-1, 1),
+    (0, -1),
+    (0, 1),
+    (1, -1),
+    (1, 0),
+    (1, 1),
 ];
+#[allow(dead_code)]
+pub static TRANSFORMS_HOR: [(isize, isize); 4] = [(-1, 0), (0, -1), (0, 1), (1, 0)];
+#[allow(dead_code)]
+pub static TRANSFORMS_DIAG: [(isize, isize); 4] = [(-1, -1), (-1, 1), (1, -1), (1, 1)];
 
 pub fn format_duration(d: Duration) -> String {
     if d.as_millis() > 1000 {
