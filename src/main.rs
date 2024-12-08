@@ -20,7 +20,11 @@ struct Args {
     iterations: usize,
 }
 const YEAR: usize = 2024;
-const DAYS: [Problem; 2] = [days::day1::DAY1, days::day2::DAY2];
+const DAYS: [Problem; 3] = [
+    days::day1::PROBLEM,
+    days::day2::PROBLEM,
+    days::day3::PROBLEM,
+];
 
 fn main() {
     let args = Args::parse();
@@ -32,19 +36,19 @@ fn main() {
     if args.day == 0 {
         //just assume
         for day in 1..=problems.len() {
-            run_specific(&problems[day - 1], &args);
+            run_specific(day, &problems[day - 1], &args);
         }
         return;
     }
-    run_specific(&problems[args.day - 1], &args);
+    run_specific(args.day, &problems[args.day - 1], &args);
 }
 
-fn run_specific(problem: &Problem, args: &Args) {
+fn run_specific(day: usize, problem: &Problem, args: &Args) {
     println!(
         "{}",
         Style::new()
             .bold()
-            .paint("=== Day ".to_owned() + &problem.day.to_string() + " ==="),
+            .paint("=== Day ".to_owned() + &day.to_string() + " ==="),
     );
     let input = if args.test {
         (problem
@@ -54,15 +58,15 @@ fn run_specific(problem: &Problem, args: &Args) {
         .map(|x| x.to_owned())
         .collect()
     } else {
-        util::get_input_data(YEAR, problem.day)
+        util::get_input_data(YEAR, day)
     };
     let start = Instant::now();
     if args.part == 0 || args.part == 1 {
-        print_result(problem, 1, args.test, (problem.part1)(&input));
+        print_result(day, 1, args.test, (problem.part1)(&input));
     }
     let part1_duration = start.elapsed();
     if args.part == 0 || args.part == 2 {
-        print_result(problem, 2, args.test, (problem.part2)(&input));
+        print_result(day, 2, args.test, (problem.part2)(&input));
     }
     let total_duration = start.elapsed();
     println!(
@@ -72,10 +76,10 @@ fn run_specific(problem: &Problem, args: &Args) {
         util::format_duration(total_duration - part1_duration)
     );
 }
-fn print_result(problem: &Problem, part: usize, test: bool, result: String) {
+fn print_result(day: usize, part: usize, test: bool, result: String) {
     println!(
         "day{}part{}{}:\t{}",
-        problem.day,
+        day,
         part,
         if test { "-TEST" } else { "" },
         result

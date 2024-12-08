@@ -1,7 +1,6 @@
 use crate::util::Problem;
 
-pub const DAY2: Problem = Problem {
-    day: 2,
+pub const PROBLEM: Problem = Problem {
     part1,
     part2,
     test_data: Some(test_data),
@@ -80,6 +79,8 @@ fn safe(report: Vec<i32>, can_skip: bool) -> bool {
     }
     true
 }
+
+#[allow(dead_code)]
 fn solve(lines: &[String], part2: bool) -> String {
     let mut safe_reports = 0;
     lines.iter().filter(|l| !l.is_empty()).for_each(|l| {

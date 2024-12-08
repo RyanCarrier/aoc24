@@ -3,7 +3,6 @@ use std::{collections::BinaryHeap, fs, path::Path, sync::Arc, time::Duration};
 use reqwest::{cookie::Jar, Url};
 #[derive(Clone, Copy)]
 pub struct Problem {
-    pub day: usize,
     pub part1: fn(input: &[String]) -> String,
     pub part2: fn(input: &[String]) -> String,
     pub test_data: Option<fn() -> &'static str>,
@@ -102,7 +101,7 @@ impl Ord for Vertex {
 
 impl PartialOrd for Vertex {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        Some(self.cmp(&other))
+        Some(self.cmp(other))
     }
 }
 #[allow(dead_code)]

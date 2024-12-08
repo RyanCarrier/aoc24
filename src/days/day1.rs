@@ -2,8 +2,7 @@ use std::collections::{HashMap, HashSet};
 
 use crate::util::Problem;
 
-pub const DAY1: Problem = Problem {
-    day: 1,
+pub const PROBLEM: Problem = Problem {
     part1,
     part2,
     test_data: Some(test_data),
