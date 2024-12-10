@@ -8,6 +8,7 @@ pub struct Problem {
     pub test_data: Option<fn() -> &'static str>,
 }
 #[allow(dead_code)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Direction {
     Up,
     Down,
@@ -16,7 +17,7 @@ pub enum Direction {
 }
 #[allow(dead_code)]
 impl Direction {
-    pub fn to_offset(&self) -> (isize, isize) {
+    pub fn get_offset(&self) -> (isize, isize) {
         match self {
             Self::Up => (-1, 0),
             Self::Down => (1, 0),
@@ -47,6 +48,14 @@ impl Direction {
             'L' => Self::Left,
             'R' => Self::Right,
             _ => panic!("Invalid direction"),
+        }
+    }
+    pub fn get_icon(&self) -> char {
+        match self {
+            Self::Up => '^',
+            Self::Down => 'v',
+            Self::Left => '<',
+            Self::Right => '>',
         }
     }
 }
