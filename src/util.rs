@@ -17,6 +17,12 @@ pub enum Direction {
 }
 #[allow(dead_code)]
 impl Direction {
+    pub fn get_directions() -> Vec<Self> {
+        vec![Self::Up, Self::Down, Self::Left, Self::Right]
+    }
+    pub fn iter() -> impl Iterator<Item = Self> {
+        vec![Self::Up, Self::Down, Self::Left, Self::Right].into_iter()
+    }
     pub fn get_offset(&self) -> (isize, isize) {
         match self {
             Self::Up => (-1, 0),
