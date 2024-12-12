@@ -1,3 +1,4 @@
+use rayon::prelude::*;
 use std::collections::HashSet;
 
 use crate::util::{Direction, Problem};
@@ -160,15 +161,19 @@ pub fn part1(lines: &[String]) -> String {
 pub fn part2(lines: &[String]) -> String {
     let mut d = import(lines);
     d.step_until_done();
-    let mut potential = d.potential_loop_obstacles();
-    potential.retain(|(y, x)| d.state[*y][*x].is_some());
-    potential.retain(|(y, x)| {
-        let mut dp = d.clone();
-        dp.obstacles[*y][*x] = true;
-        dp.reset();
-        dp.step_until_done()
-    });
-    potential.len().to_string()
+    let potential = d.potential_loop_obstacles();
+    potential
+        .par_iter()
+        .filter(|(y, x)| d.state[*y][*x].is_some())
+        .filter(|(y, x)| {
+            let mut dp = d.clone();
+            dp.obstacles[*y][*x] = true;
+            dp.reset();
+            dp.step_until_done()
+        })
+        .collect::<Vec<&(usize, usize)>>()
+        .len()
+        .to_string()
 }
 pub fn test_data() -> &'static str {
     "....#.....
