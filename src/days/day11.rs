@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use cached::proc_macro::cached;
 use num::Integer;
 
 use crate::util::Problem;
@@ -66,7 +67,63 @@ impl Data {
     }
 }
 
+fn step_all(stone_freq: &HashMap<usize, usize>, steps: usize) -> HashMap<usize, usize> {
+    let steps_per_leap = 5;
+    if steps > steps_per_leap {
+        //stops each step from having to return too large of an array
+        // just chose 5 cause it seems reasonable and very small arrays
+        // higher probably better cause hashmaps will be slower
+        //
+        // actually after quick testing 5 seems to be the best lol
+        let a = step_all(stone_freq, steps_per_leap);
+        return step_all(&a, steps - steps_per_leap);
+    }
+    stone_freq
+        .iter()
+        .fold(HashMap::new(), |mut acc, (x, freq)| {
+            step(*x, steps).iter().for_each(|y| {
+                *acc.entry(*y).or_insert(0) += freq;
+            });
+            acc
+        })
+}
+#[cached]
+fn step(x: usize, steps: usize) -> Vec<usize> {
+    if steps == 0 {
+        return vec![x];
+    }
+    if x == 0 {
+        step(1, steps - 1)
+    } else {
+        let l = x.to_string().len();
+        if l.is_even() {
+            let m = 10_usize.pow(l as u32 / 2);
+            let lhs = x / m;
+            [step(lhs, steps - 1), step(x - lhs * m, steps - 1)].concat()
+        } else {
+            step(x * 2024, steps - 1)
+        }
+    }
+}
+
 pub fn part1(lines: &[String]) -> String {
+    let (initial, _) = import(lines);
+    step_all(&initial, 25)
+        .iter()
+        .fold(0, |acc, (_, v)| acc + v)
+        .to_string()
+}
+
+pub fn part2(lines: &[String]) -> String {
+    let (initial, _) = import(lines);
+    step_all(&initial, 75)
+        .iter()
+        .fold(0, |acc, (_, v)| acc + v)
+        .to_string()
+}
+
+#[allow(dead_code)]
+fn old_part1(lines: &[String]) -> String {
     let (initial, mut d) = import(lines);
     d.step_all(&initial, 25)
         .iter()
@@ -74,7 +131,8 @@ pub fn part1(lines: &[String]) -> String {
         .to_string()
 }
 
-pub fn part2(lines: &[String]) -> String {
+#[allow(dead_code)]
+fn old_part2(lines: &[String]) -> String {
     let (initial, mut d) = import(lines);
     d.step_all(&initial, 75)
         .iter()
