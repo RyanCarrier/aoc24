@@ -1,5 +1,7 @@
 use std::collections::HashSet;
 
+use rayon::prelude::*;
+
 use crate::util::Problem;
 
 pub const PROBLEM: Problem = Problem {
@@ -32,13 +34,13 @@ impl Data {
     }
     fn get_correct_updates(&self) -> Vec<&Vec<usize>> {
         self.updates
-            .iter()
+            .par_iter()
             .filter(|x| self.is_update_correct(x))
             .collect()
     }
     fn get_incorrect_updates(&self) -> Vec<&Vec<usize>> {
         self.updates
-            .iter()
+            .par_iter()
             .filter(|x| !self.is_update_correct(x))
             .collect()
     }
@@ -56,7 +58,7 @@ pub fn part1(lines: &[String]) -> String {
 pub fn part2(lines: &[String]) -> String {
     let d = import(lines);
     d.get_incorrect_updates()
-        .iter()
+        .par_iter()
         .map(|u| {
             let mut u = (*u).clone();
             while let Some(r) = d.first_failed_rule(&u) {
