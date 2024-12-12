@@ -20,11 +20,12 @@ fn step(x: usize, steps: usize) -> usize {
     if x == 0 {
         step(1, steps - 1)
     } else {
-        let l = x.to_string().len();
+        let l = x.checked_ilog10().unwrap_or(0) + 1;
         if l.is_even() {
-            let m = 10_usize.pow(l as u32 / 2);
+            let m = 10_usize.pow(l / 2);
             let lhs = x / m;
-            step(lhs, steps - 1) + step(x - lhs * m, steps - 1)
+            let rhs = x % m;
+            step(lhs, steps - 1) + step(rhs, steps - 1)
         } else {
             step(x * 2024, steps - 1)
         }

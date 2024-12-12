@@ -26,24 +26,23 @@ impl Test {
             || self.is_true_from(start + 1, self.params[start] * _lhs, want)
     }
     fn is_true2(&self) -> bool {
-        self.is_true_from2(1, self.params[0], self.value)
+        self.is_true_from2(1, self.params[0])
     }
-    fn is_true_from2(&self, start: usize, _lhs: usize, want: usize) -> bool {
-        if _lhs > want {
+    fn is_true_from2(&self, start: usize, _lhs: usize) -> bool {
+        if _lhs > self.value {
             return false;
         }
         let p = self.params[start];
         let options: [usize; 3] = [
             _lhs + p,
             _lhs * p,
-            (_lhs.to_string() + &p.to_string()).parse().unwrap(),
+            _lhs * (10_usize.pow(p.checked_ilog10().unwrap_or(0) + 1)) + p,
+            // (_lhs.to_string() + &p.to_string()).parse().unwrap(),
         ];
         if start == self.params.len() - 1 {
             return options.iter().any(|o| *o == self.value);
         }
-        options
-            .iter()
-            .any(|o| self.is_true_from2(start + 1, *o, want))
+        options.iter().any(|o| self.is_true_from2(start + 1, *o))
     }
 }
 
