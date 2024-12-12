@@ -1,4 +1,5 @@
 use crate::util::Problem;
+use rayon::prelude::*;
 
 pub const PROBLEM: Problem = Problem {
     part1,
@@ -59,7 +60,7 @@ pub fn part1(lines: &[String]) -> String {
 pub fn part2(lines: &[String]) -> String {
     let tests = import(lines);
     tests
-        .iter()
+        .par_iter()
         .filter(|t| t.is_true2())
         .map(|t| t.value)
         .sum::<usize>()
