@@ -20,7 +20,7 @@ struct Args {
     iterations: usize,
 }
 const YEAR: usize = 2024;
-const DAYS: [Problem; 12] = [
+const DAYS: [Problem; 13] = [
     days::day1::PROBLEM,
     days::day2::PROBLEM,
     days::day3::PROBLEM,
@@ -33,6 +33,7 @@ const DAYS: [Problem; 12] = [
     days::day10::PROBLEM,
     days::day11::PROBLEM,
     days::day12::PROBLEM,
+    days::day13::PROBLEM,
 ];
 
 fn main() {
