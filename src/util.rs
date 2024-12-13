@@ -18,10 +18,18 @@ pub enum Direction {
 #[allow(dead_code)]
 impl Direction {
     pub fn get_directions() -> [Self; 4] {
-        [Self::Up, Self::Down, Self::Left, Self::Right]
+        [Self::Up, Self::Right, Self::Down, Self::Left]
     }
     pub fn iter() -> impl Iterator<Item = Self> {
         Direction::get_directions().into_iter()
+    }
+    pub fn get_diagonal_offsets(&self) -> [(isize, isize); 2] {
+        match self {
+            Self::Up => [(-1, -1), (-1, 1)],
+            Self::Down => [(1, -1), (1, 1)],
+            Self::Left => [(-1, -1), (1, -1)],
+            Self::Right => [(-1, 1), (1, 1)],
+        }
     }
     pub fn get_offset(&self) -> (isize, isize) {
         match self {
