@@ -23,6 +23,13 @@ impl Direction {
     pub fn iter() -> impl Iterator<Item = Self> {
         Direction::get_directions().into_iter()
     }
+    pub fn is_horizontal(&self) -> bool {
+        matches!(self, Self::Left | Self::Right)
+    }
+
+    pub fn is_vertical(&self) -> bool {
+        matches!(self, Self::Up | Self::Down)
+    }
     pub fn get_diagonal_offsets(&self) -> [(isize, isize); 2] {
         match self {
             Self::Up => [(-1, -1), (-1, 1)],
@@ -65,6 +72,15 @@ impl Direction {
             'D' => Self::Down,
             'L' => Self::Left,
             'R' => Self::Right,
+            _ => panic!("Invalid direction"),
+        }
+    }
+    pub fn from_arrow(c: char) -> Self {
+        match c {
+            '^' => Self::Up,
+            'v' => Self::Down,
+            '<' => Self::Left,
+            '>' => Self::Right,
             _ => panic!("Invalid direction"),
         }
     }
