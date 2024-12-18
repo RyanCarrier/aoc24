@@ -84,6 +84,14 @@ impl Direction {
             _ => panic!("Invalid direction"),
         }
     }
+    pub fn opposite(&self) -> Self {
+        match self {
+            Self::Up => Self::Down,
+            Self::Down => Self::Up,
+            Self::Left => Self::Right,
+            Self::Right => Self::Left,
+        }
+    }
     pub fn get_icon(&self) -> char {
         match self {
             Self::Up => '^',
@@ -196,7 +204,12 @@ impl PartialOrd for Vertex {
 }
 #[allow(dead_code)]
 impl Graph {
-    pub fn dijkstra(&self, from: usize, to: usize) -> usize {
+    pub fn dijkstra(
+        &self,
+        from: usize,
+        to: usize,
+        weight_fn: Option<fn(usize, usize) -> usize>,
+    ) -> usize {
         let mut dist = vec![usize::MAX; self.verticies];
         let mut pq: BinaryHeap<Vertex> = BinaryHeap::new();
         dist[from] = 0;
@@ -210,7 +223,11 @@ impl Graph {
                 return next.dist;
             }
             for arc in self.arcs[next.index].iter() {
-                let new_dist = next.dist + arc.weight;
+                let new_dist = if let Some(weight_fn) = weight_fn {
+                    next.dist + weight_fn(arc.from, arc.to)
+                } else {
+                    next.dist + arc.weight
+                };
                 println!(
                     "{}=={}->{} newdist {} dist[] {}",
                     next.index, arc.from, arc.to, new_dist, dist[arc.to]
@@ -254,7 +271,7 @@ mod tests {
                 vec![],
             ],
         };
-        assert_eq!(graph.dijkstra(0, 5), 11);
-        assert_eq!(graph.dijkstra(0, 2), 2);
+        assert_eq!(graph.dijkstra(0, 5, None), 11);
+        assert_eq!(graph.dijkstra(0, 2, None), 2);
     }
 }

@@ -171,7 +171,6 @@ pub fn part1(lines: &[String]) -> String {
 }
 
 pub fn part2(lines: &[String]) -> String {
-    //118170 too low
     let mut d = import(lines);
     d.grid = d
         .grid
